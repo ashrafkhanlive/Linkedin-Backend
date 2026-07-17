@@ -1,0 +1,66 @@
+{
+  "info": {
+    "name": "LinkedIn Clone Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api/v1" },
+    { "key": "accessToken", "value": "" },
+    { "key": "refreshToken", "value": "" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{accessToken}}", "type": "string" }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"dev@example.com\",\n  \"password\": \"Password@123\",\n  \"name\": \"Dev User\",\n  \"location\": \"Pune, India\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"dev@example.com\",\n  \"password\": \"Password@123\"\n}"
+        }
+      }
+    },
+    { "name": "Users - Me", "request": { "method": "GET", "url": "{{baseUrl}}/users/me" } },
+    {
+      "name": "Profile - Update Me",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/profiles/me",
+        "body": { "mode": "raw", "raw": "{\n  \"headline\": \"Senior Java Full Stack Developer\",\n  \"summary\": \"Building scalable systems.\",\n  \"industry\": \"Technology\",\n  \"website\": \"https://example.com\"\n}" }
+      }
+    },
+    {
+      "name": "Posts - Create",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/posts",
+        "body": { "mode": "raw", "raw": "{\n  \"content\": \"Hello from the LinkedIn clone API\",\n  \"imageUrl\": null,\n  \"videoUrl\": null\n}" }
+      }
+    },
+    { "name": "Posts - Feed", "request": { "method": "GET", "url": "{{baseUrl}}/posts/feed?page=0&size=10&sort=postDate,desc" } },
+    { "name": "Connections - Requests", "request": { "method": "GET", "url": "{{baseUrl}}/connections/requests" } },
+    { "name": "Groups - Search", "request": { "method": "GET", "url": "{{baseUrl}}/groups/search?q=java" } },
+    { "name": "Search - Users", "request": { "method": "GET", "url": "{{baseUrl}}/search/users?q=dev" } }
+  ]
+}

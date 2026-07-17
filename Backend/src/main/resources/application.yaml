@@ -1,0 +1,57 @@
+
+server:
+  port: ${SERVER_PORT:8080}
+
+
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:Backend/.env[.properties]
+
+  application:
+    name: LinkedInClone
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:}
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/linkedin_clone}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:elite}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  docker:
+    compose:
+      enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      repositories:
+        enabled: false
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:please-change-this-secret-to-at-least-256-bits-before-production}
+    access-token-expiration-ms: ${JWT_ACCESS_EXPIRATION_MS:900000}
+    refresh-token-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+  oauth2:
+    redirect-uri: ${OAUTH2_REDIRECT_URI:http://localhost:3000/oauth2/redirect}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    com.coderberojgar.LinkedInClone: INFO
