@@ -376,7 +376,7 @@ If you found this project helpful, consider giving it a ⭐ on GitHub.
 
 GitHub: https://github.com/ashrafkhanlive
 
-LinkedIn: https://linkedin.com/in/ashrafkhancode
+LinkedIn: https://linkedin.com/in/ashraf-khan-code
 
 Email: ashrafkhanconnect@gmail.com
 
