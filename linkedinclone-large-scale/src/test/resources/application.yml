@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:reportdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  kafka:
+    bootstrap-servers: "${spring.embedded.kafka.brokers}"
+  data:
+    redis:
+      host: localhost
+      port: 6399
+
+report:
+  storage:
+    mode: local
+    local-base-path: ./build/test-reports

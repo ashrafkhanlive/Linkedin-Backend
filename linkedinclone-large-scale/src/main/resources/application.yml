@@ -1,0 +1,101 @@
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  application:
+    name: report-service
+
+  threads:
+    virtual:
+      enabled: true   # Java 21 virtual threads for Tomcat + @Async executors
+
+  spring:
+    datasource:
+      url: jdbc:mysql://localhost:3306/reportdb
+      username: root
+      password: elite
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          batch_size: 50
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle: 8
+          min-idle: 2
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      properties:
+        enable.idempotence: true
+    consumer:
+      group-id: report-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "com.example.report.dto"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.example.report.dto.ReportGenerationEvent
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+      concurrency: 3
+
+report:
+  kafka:
+    topic: report-generation-topic
+    topic-dlt: report-generation-topic.DLT
+  cache:
+    ttl-minutes: 30
+  storage:
+    mode: local          # local | s3
+    local-base-path: ./generated-reports
+    s3:
+      bucket: my-reports-bucket
+      region: us-east-1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    root: INFO
+    com.example.report: DEBUG
